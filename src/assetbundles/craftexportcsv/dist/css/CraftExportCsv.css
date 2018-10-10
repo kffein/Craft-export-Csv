@@ -1,0 +1,31 @@
+/**
+ * craft-export-csv plugin for Craft CMS
+ *
+ * craft-export-csv CSS
+ *
+ * @author    Joel Lachance
+ * @copyright Copyright (c) 2018 Joel Lachance
+ * @link      http://kffein.com
+ * @package   CraftExportCsv
+ * @since     1.0.1
+ */
+.last-modified{
+	float: right;
+	margin-top: 5px;
+}
+
+.export-button-actions{
+	float:left;
+}
+
+.export-button-actions a{
+	margin-bottom: 5px;
+}
+
+.disabled{
+	pointer-events: none;
+}
+
+.reports-section hr{
+	clear:both;
+}

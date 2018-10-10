@@ -1,0 +1,112 @@
+{#
+/**
+ * craft-export-csv plugin for Craft CMS 3.x
+ *
+ * craft-export-csv Settings.twig
+ *
+ * @author    Joel Lachance
+ * @copyright Copyright (c) 2018 Joel Lachance
+ * @link      http://kffein.com
+ * @package   CraftExportCsv
+ * @since     1.0.1
+ */
+#}
+{% extends "_layouts/cp" %}
+{% import "_includes/forms" as forms %}
+
+{# {% do view.registerAssetBundle("kffein\\craftexportcsv\\assetbundles\\craftexportcsv\\CraftexportcsvAsset") %} #}
+
+{% set selectedSubnavItem = 'settings' %}
+{% set title = 'settings'|t('craft-export-csv') %}
+{% set fullPageForm = true %}
+
+{% block content %}
+    <input type="hidden" name="action" value="craft-export-csv/settings/save-settings">
+    {{ redirectInput('craft-export-csv/settings') }}
+
+    {{ forms.textField({
+        label: 'numberOfRows-label'|t('craft-export-csv'),
+        instructions: 'numberOfRows-instructions'|t('craft-export-csv'),
+        id: 'numberOfRows',
+        name: 'settings[numberOfRows]',
+        
+        size:3
+    })}}
+
+    {{ forms.selectField({
+        label: 'section-handle-label'|t('craft-export-csv'),
+        instructions: 'section-handle-instructions'|t('craft-export-csv'),
+        id: 'sectionHandle',
+        name: 'settings[sectionHandle]',
+        
+        options: sectionsOptions,
+    })}}
+
+    {{ forms.textField({
+        label: 'filename-label'|t('craft-export-csv'),
+        instructions: 'filename-instructions'|t('craft-export-csv'),
+        id: 'filename',
+        name: 'settings[filename]',
+        required:true,
+        
+    })}}
+
+    {{ forms.editableTableField({
+        label: 'fields-label'|t('craft-export-csv'),
+        instructions: 'fields-instructions'|t('craft-export-csv'),
+        id: 'fields',
+        name: 'settings[fields]',
+        cols: {
+            name: {
+                heading: 'field-name'|t('craft-export-csv'),
+                type: 'text',
+            },
+            type: {
+                heading: 'field-type'|t('craft-export-csv'),
+                type: 'select',
+                options: fieldTypeOptions,
+            },
+            value: {
+                heading: 'field-value'|t('craft-export-csv'),
+                type: 'text',
+            }
+        },
+    })}}
+
+    <div class="heading">
+        <h1>List of reports</h1>
+    </div>
+
+    {% if settings.exports is empty %}
+        <hr>
+        <p>No reports</p>
+    {% endif %}
+
+    <div id="reports-list" class="field">
+        {% for export in settings.exports %}
+            <hr/>
+            <div>
+            <p>{{ export.filename }}</p>
+            <a href="{{ actionUrl('craft-export-csv/settings/delete-export', { id: export.id }) }}" class="btn submit" >{{ 'delete'|t('craft-export-csv') }}</a>
+            </div>
+            
+        {% endfor %}
+    </div>
+    
+
+    <style type="text/css">
+        #reports-list a{
+            float:right;
+            margin: 15px;
+        }
+        #reports-list p{
+            float:left;
+            margin: 21px !important;
+            color: #8f98a3;
+        }
+        #reports-list hr{
+            clear:both;
+            margin: 0 0;
+        }
+    </style>
+{% endblock %}

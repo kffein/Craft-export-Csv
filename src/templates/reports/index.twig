@@ -1,0 +1,33 @@
+{% extends "_layouts/cp" %}
+
+{% do view.registerAssetBundle("kffein\\craftexportcsv\\assetbundles\\craftexportcsv\\CraftExportCsvAsset") %}
+{% set title  = "reports-label"|t('craft-export-csv') %}
+
+{% block content %}
+
+	{% if exports is defined and exports is empty%}
+		<p>{{ 'no-reports'|t('craft-export-csv') }}</p>
+    	<a href="craft-export-csv/settings" class="btn">{{ 'configure-report'|t('craft-export-csv') }}</a>
+	{% else %}
+		
+		{% for export in exports if export.section is defined %}
+
+			<div class="reports-section">
+				{{ loop.index > 1 ? '<hr />'}}
+
+				<div class="export-button-actions">
+		    		<a href="{{ actionUrl('craft-export-csv/reports/generate', { id: export.id }) }}" class="btn submit" >{{ 'generate'|t('craft-export-csv', {sectionName: export.section.name,filename: export.filename }) }}</a>
+		    		<br />
+		    		<a href="{{ actionUrl('craft-export-csv/reports/download', { id: export.id }) }}" class="btn submit {{ export.dateUpdated is not null ?:'disabled'}}">{{ 'download'|t('craft-export-csv', {filename: export.filename}) }}</a>
+				</div>
+
+		    	<div class="last-modified">
+		    		<label for="last-modified__{{export.id}}">Last updated : </label>
+		    		<span id="last-modified__{{export.id}}">{{export.dateUpdated is not null ? craft.exportsService.getDateUpdatedFormated(export.dateUpdated):'none'}}</span>
+		    	</div>
+
+	    	</div>
+
+		{% endfor %}
+	{% endif %}
+{% endblock %}

@@ -1,0 +1,50 @@
+<?php
+/**
+ * craft-export-csv plugin for Craft CMS 3.x
+ *
+ * Description
+ *
+ * @link      http://kffein.com
+ * @copyright Copyright (c) 2018 Joel Lachance
+ */
+
+/**
+ * craft-export-csv en Translation
+ *
+ * Returns an array with the string to be translated (as passed to `Craft::t('craft-export-csv', '...')`) as
+ * the key, and the translation as the value.
+ *
+ * http://www.yiiframework.com/doc-2.0/guide-tutorial-i18n.html
+ *
+ * @author    Joel Lachance
+ * @package   CraftExportCsv
+ * @since     1.0.1
+ */
+return [
+    // Nav
+    'reports-label' => 'Rapport',
+    'settings' => 'Paramètres',
+
+    // Form
+    'numberOfRows-label' => 'Nombre d\'entrées',
+    'numberOfRows-instructions' => 'Entrer le nombre d\'entrées max pour chaque requête.',
+    'section-handle-label' => 'Entrée à exporter',
+    'section-handle-instructions' => 'Sélectionnez le type d’entrée que vous souhaitez exporter.',
+    'filename-label' => 'Nom du fichier',
+    'filename-instructions' => 'Clés disponibiles: {timestamp}, {Y}, {d}, {m}, {H}, {i}, {section-handle}',
+    'fields-label' => 'Colonnes',
+    'fields-instructions' => 'Décrivez les colonnes à exporter.',
+    'field-name' => 'Titre de la colonne',
+    'field-type' => 'Type de correspondance',
+    'field-type-handle' => 'Handle',
+    'field-type-concat-handle' => 'Concaténation d’handle',
+    'field-type-custom-query' => 'Requête custon ! Attention, ça peut faire crasher le rapport !',
+    'field-value' => 'Valeur',
+
+    // Reports
+    'generate' => 'Génerer le fichier {filename} de la section : {sectionName}',
+    'download' => 'Télécharger le fichier {filename}',
+    'no-reports' => 'Aucun rapport configuré.',
+    'configure-report' => 'Configurer un rapport',
+    'no-result' => 'Aucune entrée à télécharger',
+];

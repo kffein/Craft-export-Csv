@@ -1,0 +1,44 @@
+{
+  "name": "kffein/craft-export-csv",
+  "description": "A plugin to export entries to CSV files.",
+  "type": "craft-plugin",
+  "version": "1.0.1",
+  "keywords": [
+    "craft",
+    "cms",
+    "craftcms",
+    "craft-plugin",
+    "craft-export-csv"
+  ],
+  "support": {
+    "docs": "https://github.com/kffein/craft-export-csv/blob/master/README.md",
+    "issues": "https://github.com/kffein/craft-export-csv/issues"
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Joel Lachance",
+      "homepage": "http://kffein.com"
+    },
+    {
+      "name": "Camille Boissel",
+      "homepage": "http://kffein.com"
+    }
+  ],
+  "require": {
+    "craftcms/cms": "^3.0.0-RC1"
+  },
+  "autoload": {
+    "psr-4": {
+      "kffein\\craftexportcsv\\": "src/"
+    }
+  },
+  "extra": {
+    "handle": "craft-export-csv",
+    "name": "Export CSV",
+    "developer": "KFFEIN",
+    "developerUrl": "https://kffein.com",
+    "changelogUrl": "https://raw.githubusercontent.com/kffein/craft-export-csv/master/CHANGELOG.md",
+    "class": "kffein\\craftexportcsv\\CraftExportCsv"
+  }
+}
