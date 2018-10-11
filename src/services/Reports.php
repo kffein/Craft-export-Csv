@@ -166,10 +166,10 @@ class Reports extends Component
                 'label' => Craft::t('craft-export-csv', 'field-type-' . CraftExportCsv::FIELD_TYPE_CONCAT_HANDLE),
                 'value' => CraftExportCsv::FIELD_TYPE_CONCAT_HANDLE,
             ],
-            [
-                'label' => Craft::t('craft-export-csv', 'field-type-' . CraftExportCsv::FIELD_TYPE_CUSTOM_QUERY),
-                'value' => CraftExportCsv::FIELD_TYPE_CUSTOM_QUERY,
-            ]
+            // [
+            //     'label' => Craft::t('craft-export-csv', 'field-type-' . CraftExportCsv::FIELD_TYPE_CUSTOM_QUERY),
+            //     'value' => CraftExportCsv::FIELD_TYPE_CUSTOM_QUERY,
+            // ]
         ];
     }
 

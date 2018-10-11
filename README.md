@@ -12,21 +12,25 @@ To install the plugin, follow these instructions.
 
 1. In the Control Panel, go to Settings → Plugins and click the “Install” button for craft-export-csv.
 
-## craft-export-csv Overview
+## Overview
 
 This plugin will allow the settings of multiple csv export configuration
 
-## Configuring craft-export-csv
+## Configuration
 
-When saving a setting you can select a section and enter the name of the file you want to save locally. Then you can add field to be generated in the csv. There are currently two types of rows that you can create, with one field only or with multiple field mixed with texts.
+![Screenshot](resources/img/settings.png)
 
-You can also set the size of rows each job will have to process. Most server will not allowed a large amount of rows processed. This depends on your php configuration.
+When saving a setting you can select a section and enter the name of the file you want to save locally. Then you can add field to be generated in the csv. There are currently two types of rows that you can create ( one field or multiple field and texts).
+
+You can also set the size of rows each job will have to process. Most server will not allowed a large amount. This depends on your php configuration.
 
 ## Using craft-export-csv
 
+![Screenshot](resources/img/reports.png)
+
 When using export csv, on the main page you can generate a csv file. Then you can download the last version of the file generated. Generating a new file will overwrite the previous csv file.
 
-## craft-export-csv Roadmap
+## Roadmap
 
 Some ideas for potential features:
 
