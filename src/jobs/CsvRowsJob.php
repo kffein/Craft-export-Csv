@@ -46,9 +46,10 @@ class CsvRowsJob extends BaseJob
      * @inheritdoc
      */
     public function execute($queue)
-    {
+    {   
+        $filename = CraftExportCsv::getInstance()->reportsService->getCsvFilename($this->export);
         // Open the file with append as parameters
-        $exportFile = fopen('uploads/'.$this->export['filename'], "a");
+        $exportFile = fopen('uploads/'.$filename, "a");
 
         // Prepare the properties for the loop
         $lines = [];

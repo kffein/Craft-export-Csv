@@ -51,12 +51,14 @@ class ReportsController extends Controller
 
         // Fetch all exports data to include in the template
         $exportsInfos = [];
-        foreach ($this->settings->exports as $export) {
-            if($export['sectionHandle']){
-                $section = Craft::$app->getSections()->getSectionByHandle($export['sectionHandle']);
-                $export['section'] = $section;
+        if(!empty($this->settings->exports)){
+            foreach ($this->settings->exports as $export) {
+                if($export['sectionHandle']){
+                    $section = Craft::$app->getSections()->getSectionByHandle($export['sectionHandle']);
+                    $export['section'] = $section;
+                }
+                $exportsInfos[] = $export;
             }
-            $exportsInfos[] = $export;
         }
 
         return $this->renderTemplate('craft-export-csv/reports/index', ['exports'=>$exportsInfos]);
@@ -103,13 +105,14 @@ class ReportsController extends Controller
 
         // Fetch the export by id
         $export = $this->plugin->exportsService->getExportById($id);
-
-        if(file_exists($export['filename'])){
+        $filename = $this->plugin->reportsService->getCsvFilename($export);
+        
+        if(file_exists('uploads/'.$export['filename'])){
             // Downlading the file
             header('Content-Encoding: UTF-8');
             header('Content-Type: text/csv; charset=utf-8');
             header(
-                sprintf('Content-Disposition: attachment; filename=%s', $this->plugin->reportsService->getCsvFilename($export))
+                sprintf('Content-Disposition: attachment; filename=%s',$filename)
             );
         }else{
             // If it does not exist we tell the export setting to reset
