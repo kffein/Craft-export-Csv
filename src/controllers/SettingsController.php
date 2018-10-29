@@ -4,18 +4,14 @@ namespace kffein\craftexportcsv\controllers;
 
 use kffein\craftexportcsv\CraftExportCsv;
 use kffein\craftexportcsv\models\Export;
-
 use Craft;
 use craft\base\Plugin;
 use craft\errors\InvalidPluginException;
-use craft\helpers\Json;
-use craft\services\Sections;
 use craft\web\Controller as BaseController;
-
 use yii\web\BadRequestHttpException;
 
 /**
- * 
+ *
  * @author    Camille Boissel
  * @package   CraftExportCsv
  * @since     1.0.1
@@ -60,7 +56,7 @@ class SettingsController extends BaseController
         $sections = Craft::$app->getSections()->getAllSections();
         $sectionsOptions = [];
         foreach ($sections as $section) {
-          $sectionsOptions[] = [
+            $sectionsOptions[] = [
             'label' => $section->name,
             'value' => $section->handle,
           ];
@@ -90,7 +86,7 @@ class SettingsController extends BaseController
         // Get param value for a new export.
         $exportValue = Craft::$app->getRequest()->getBodyParam('settings', []);
 
-        if(empty($exportValue['filename'] )){
+        if (empty($exportValue['filename'])) {
             Craft::$app->getSession()->setError(Craft::t('app', 'A file name is required'));
 
             // Send the plugin back to the template
@@ -102,7 +98,7 @@ class SettingsController extends BaseController
         // Create export from model and set all required value.
         $newExport = new Export();
         $newExport->setAttributes($exportValue);
-        
+
         // Add new export to settings array
         $this->settings->exports[] = $newExport;
         if (!Craft::$app->getPlugins()->savePluginSettings($this->plugin, $this->settings->exports)) {
@@ -136,9 +132,8 @@ class SettingsController extends BaseController
 
         if (!Craft::$app->getPlugins()->savePluginSettings($this->plugin, $this->settings->exports)) {
             Craft::$app->getSession()->setError(Craft::t('app', 'Couldn’t save plugin settings.'));
-        }else{
+        } else {
             Craft::$app->getSession()->setNotice(Craft::t('app', 'Plugin settings updated.'));
-
         }
         return $this->redirect('craft-export-csv/settings');
     }

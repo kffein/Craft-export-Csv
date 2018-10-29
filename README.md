@@ -20,7 +20,12 @@ This plugin will allow the settings of multiple csv export configuration
 
 ![Screenshot](resources/img/settings.png)
 
-When saving a setting you can select a section and enter the name of the file you want to save locally. Then you can add field to be generated in the csv. There are currently two types of rows that you can create ( one field or multiple field and texts).
+When saving a setting you can select a section and enter the name of the file you want to save locally. Then you can add field to be generated in the csv. There are currently two types of rows that you can create ( one field or multiple field and texts) :
+
+- **Handle** : Written without brackets and can access created fields and craft entry attributes
+
+- **Concat handle** : Each field are written within brackets as separator and can access only created fields.
+
 
 You can also set the size of rows each job will have to process. Most server will not allowed a large amount. This depends on your php configuration.
 

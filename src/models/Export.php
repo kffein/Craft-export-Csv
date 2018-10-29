@@ -11,8 +11,6 @@
 namespace kffein\craftexportcsv\models;
 
 use kffein\craftexportcsv\CraftExportCsv;
-
-use Craft;
 use craft\base\Model;
 
 /**
@@ -34,7 +32,13 @@ class Export extends Model
     public $sectionHandle;
     public $filename = '{section-handle}-{timestamp}.csv';
 
-    
+    /**
+     * Temporary porperty of the converted field name everytime the csv is generated.
+     *
+     * @var string
+     */
+    public $lastSavedFilename = '.csv';
+
     /**
      * @var int
      */
@@ -54,6 +58,7 @@ class Export extends Model
 
         $this->id = uniqid();
     }
+
     /**
      * Returns the validation rules for attributes.
      *

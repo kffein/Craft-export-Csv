@@ -12,13 +12,10 @@ namespace kffein\craftexportcsv\services;
 
 use kffein\craftexportcsv\CraftExportCsv;
 use kffein\craftexportcsv\jobs\CsvRowsJob;
-
 use \Datetime;
 use Craft;
 use craft\base\Component;
 use craft\elements\Entry;
-use craft\elements\db\CategoryQuery;
-use craft\elements\db\EntryQuery;
 
 /**
  * Reports Service
@@ -38,7 +35,8 @@ class Reports extends Component
      *
      * @return Array
      */
-    public function getActiveEntriesForSection($sectionHandle, $limit = null) {
+    public function getActiveEntriesForSection($sectionHandle, $limit = null)
+    {
         return Entry::find()
             ->section($sectionHandle)
             ->status(Entry::STATUS_ENABLED)
@@ -48,11 +46,11 @@ class Reports extends Component
 
     /**
      * Return the filename
-     * 
+     *
      * @return string
      */
-    public function getCsvFilename($exportSettings) {
-
+    public function getCsvFilename($exportSettings)
+    {
         $now = new DateTime();
 
         $filename = $exportSettings['filename'];
@@ -71,20 +69,22 @@ class Reports extends Component
 
     /**
      * Get all fields for section handle (empty array if not section defined)
-     * 
+     *
      * @return array
      */
-    public function getAllFields($sectionHandle) {
+    public function getAllFields($sectionHandle)
+    {
         $fields = [];
 
         $section = Craft::$app->getSections()->getSectionByHandle($sectionHandle);
-        if (! $section) {
+        if (!$section) {
             return $fields;
         }
 
         $sectionFields = $section->getEntryTypes()[0]->getFieldLayout()->getFields();
+
         foreach ($sectionFields as $field) {
-            $fields[$field->handle] = $field->name; 
+            $fields[$field->handle] = $field->name;
         }
 
         return $fields;
@@ -92,10 +92,17 @@ class Reports extends Component
 
     /**
      * Generate array for csv
-     * 
+     *
      * @var array
      */
-    public function generateCsvLines($export) {
+    public function generateCsvLines($export)
+    {
+        // Delete old file if exist
+        $this->deleteOldReport($export);
+
+        // Generate temporary filename
+        $export = $this->setExportTemporaryName($export);
+
         // Get the number of rows the job should be divided
         $numberOfRows = $export['numberOfRows'];
 
@@ -103,26 +110,26 @@ class Reports extends Component
         $entriesId = $this->getActiveEntriesId($export['sectionHandle']);
 
         // Overwrite file with just the header before adding rows
-        $this->writeHeader($export['fields'],$export['filename']);
+        $this->writeHeader($export['fields'], $export['lastSavedFilename']);
 
         // Dividing the jobs
         $numberOfJobs = floor(count($entriesId) / $numberOfRows);
 
         $rowStart = 0;
-        for ($i=0; $i <= $numberOfJobs; $i++) {
+        for ($i = 0; $i <= $numberOfJobs; $i++) {
             // Loop parameters
             $last = false;
             $idsChunk = [];
 
             // only get the ids up to the number of rows limit
-            for ($j=$rowStart; $j < ($rowStart + $numberOfRows); $j++) {
-                if(isset($entriesId[$j])){
+            for ($j = $rowStart; $j < ($rowStart + $numberOfRows); $j++) {
+                if (isset($entriesId[$j])) {
                     $idsChunk[] = $entriesId[$j];
                 }
             }
 
             // The job need to know if it's the last one
-            if($i >= $numberOfJobs){
+            if ($i >= $numberOfJobs) {
                 $last = true;
             }
 
@@ -138,10 +145,11 @@ class Reports extends Component
 
     /**
      * Return concatened string with categories name
-     * 
+     *
      * @return string
      */
-    public function getTitles($entries) {
+    public function getTitles($entries)
+    {
         $titles = [];
 
         foreach ($entries as $entry) {
@@ -153,10 +161,11 @@ class Reports extends Component
 
     /**
      * Return field types for select options
-     * 
+     *
      * @return array
      */
-    public function getFieldTypeOptions() {
+    public function getFieldTypeOptions()
+    {
         return [
             [
                 'label' => Craft::t('craft-export-csv', 'field-type-' . CraftExportCsv::FIELD_TYPE_HANDLE),
@@ -175,27 +184,31 @@ class Reports extends Component
 
     /**
      * Replace field handle text with the field value
-     * 
+     *
      * @param string $string
      * @param string $section
+     * @return string
      */
-    public function replaceFieldsHandle($string, $section) {
+    public function replaceFieldsHandle($string, $section)
+    {
         $formattedString = $string;
-        
+
         foreach (array_keys($this->_entryFields) as $handle) {
             $formattedString = preg_replace(sprintf('/{%s}/', $handle), $section->{$handle}, $formattedString);
         }
+
         return $formattedString;
     }
 
     /**
      * Return array of ids
-     * 
+     *
      * @param string $sectionHandle
      * @param int $limit
      * @return array
      */
-    public function getActiveEntriesId($sectionHandle, $limit = null) {
+    public function getActiveEntriesId($sectionHandle, $limit = null)
+    {
         return Entry::find()
             ->section($sectionHandle)
             ->status(Entry::STATUS_ENABLED)
@@ -205,11 +218,12 @@ class Reports extends Component
 
     /**
      * Return an array of entries
-     * 
+     *
      * @param array $ids
      * @return array
      */
-    public function getEntriesById($ids){
+    public function getEntriesById($ids)
+    {
         return Entry::find()
             ->id($ids)
             ->status(Entry::STATUS_ENABLED)
@@ -219,29 +233,75 @@ class Reports extends Component
 
     /**
      * Set this class properties of fields to be used by other function
-     * 
+     *
      * @param string @sectionHandle
+     * @return void
      */
-    public function setEntryFields($sectionHandle){
+    public function setEntryFields($sectionHandle)
+    {
         $this->_entryFields = $this->getAllFields($sectionHandle);
     }
 
     /**
      * Write the head of all the field in a csv file
-     * 
+     *
      * @param array $fields
      * @param string $filename
+     * @return void
      */
-    public function writeHeader($fields,$filename){
-        $exportFile = fopen('uploads/'.$filename, "w",true);
+    public function writeHeader($fields, $filename)
+    {
+        $folder = CRAFT_BASE_PATH . '/storage/reports/';
+        if (!file_exists($folder)) {
+            mkdir($folder, 0777, true);
+        }
+        $exportFile = fopen($folder . $filename, 'w', true);
+
         $headers = [];
         foreach ($fields as $field) {
             $headers[] = $field['name'];
         }
-        fputs($exportFile, "\xEF\xBB\xBF" ); // UTF-8 BOM !!!!!
+        fputs($exportFile, "\xEF\xBB\xBF"); // UTF-8 BOM !!!!!
         fputcsv($exportFile, $headers);
 
         fclose($exportFile);
     }
-    
+
+    /**
+     * Convert the filename and save it in the exports settings. It need to be returned to use the latest config saved.
+     *
+     * @param array $generatedExport
+     * @return array
+     */
+    public function setExportTemporaryName($generatedExport)
+    {
+        $plugin = CraftExportCsv::$plugin;
+        $settings = $plugin->getSettings();
+        foreach ($settings->exports as $key => $export) {
+            // Find the same export settings and add a last saved name informations to
+            // keep track of the file on the server.
+            if ($export['id'] == $generatedExport['id']) {
+                $settings->exports[$key]['lastSavedFilename'] = $this->getCsvFilename($generatedExport);
+                if (!Craft::$app->getPlugins()->savePluginSettings($plugin, $settings->exports)) {
+                    Craft::$app->getSession()->setError(Craft::t('app', 'Couldn’t save plugin settings.'));
+                }
+                return $settings->exports[$key];
+            }
+        }
+        return $generatedExport;
+    }
+
+    /**
+     * Delete file based on lastSavedFilename before updating the generated file.
+     *
+     * @param array $generatedExport
+     * @return void
+     */
+    public function deleteOldReport($generatedExport)
+    {
+        $filepath = CRAFT_BASE_PATH . '/storage/reports/' . $generatedExport['lastSavedFilename'];
+        if (file_exists($filepath)) {
+            unlink($filepath);
+        }
+    }
 }

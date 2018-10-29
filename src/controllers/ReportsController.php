@@ -10,12 +10,9 @@
 namespace kffein\craftexportcsv\controllers;
 
 use kffein\craftexportcsv\CraftExportCsv;
-
 use Craft;
 use craft\web\Controller;
-use craft\elements\Entry;
-use craft\helpers\UrlHelper;
-
+use craft\helpers\ElementHelper;
 
 class ReportsController extends Controller
 {
@@ -51,9 +48,9 @@ class ReportsController extends Controller
 
         // Fetch all exports data to include in the template
         $exportsInfos = [];
-        if(!empty($this->settings->exports)){
+        if (!empty($this->settings->exports)) {
             foreach ($this->settings->exports as $export) {
-                if($export['sectionHandle']){
+                if ($export['sectionHandle']) {
                     $section = Craft::$app->getSections()->getSectionByHandle($export['sectionHandle']);
                     $export['section'] = $section;
                 }
@@ -61,7 +58,7 @@ class ReportsController extends Controller
             }
         }
 
-        return $this->renderTemplate('craft-export-csv/reports/index', ['exports'=>$exportsInfos]);
+        return $this->renderTemplate('craft-export-csv/reports/index', ['exports' => $exportsInfos]);
     }
 
     /**
@@ -77,13 +74,13 @@ class ReportsController extends Controller
         $export = $this->plugin->exportsService->getExportById($id);
 
         // If for some reason there were no section selected
-        if (! $export['sectionHandle']) {
+        if (!$export['sectionHandle']) {
             throw new \Exception('Can\'t start csv generator without section defined');
         }
 
         // Return an error for empty fields
-        if(empty($export['fields'])){
-            Craft::$app->getSession()->setError("There are no field to generate the csv");
+        if (empty($export['fields'])) {
+            Craft::$app->getSession()->setError('There are no field to generate the csv');
             return Craft::$app->controller
                 ->redirect('craft-export-csv');
         }
@@ -91,7 +88,7 @@ class ReportsController extends Controller
         $this->plugin->reportsService->generateCsvLines($export);
 
         // Redirect with notice to start the queue
-        Craft::$app->getSession()->setNotice("Csv generator started");
+        Craft::$app->getSession()->setNotice('Csv generator started');
         return Craft::$app->controller
                 ->redirect('craft-export-csv');
     }
@@ -105,20 +102,22 @@ class ReportsController extends Controller
 
         // Fetch the export by id
         $export = $this->plugin->exportsService->getExportById($id);
-        $filename = $this->plugin->reportsService->getCsvFilename($export);
-        
-        if(file_exists('uploads/'.$export['filename'])){
+
+        $folder = CRAFT_BASE_PATH . '/storage/reports/';
+
+        if (file_exists($folder . $export['lastSavedFilename'])) {
             // Downlading the file
             header('Content-Encoding: UTF-8');
-            header('Content-Type: text/csv; charset=utf-8');
+            header('Content-Type: text/csv; charset=UTF-8');
             header(
-                sprintf('Content-Disposition: attachment; filename=%s',$filename)
+                sprintf('Content-Disposition: attachment; filename=%s', ElementHelper::createSlug($export['lastSavedFilename']))
             );
-        }else{
-            // If it does not exist we tell the export setting to reset
-            // his dateUpdated so it knows it need to be regenerated
-            Craft::$app->getSession()->setError("File not found");
-            CraftExportCsv::getInstance()->exportsService->setExportDate($export['id'],null);
+            readfile($folder . $export['lastSavedFilename']);
+        } else {
+            // If it does not exist we tell the export setting to reset his
+            // dateUpdated so it knows it need to be regenerated
+            Craft::$app->getSession()->setError('File not found');
+            CraftExportCsv::getInstance()->exportsService->setExportDate($export['id'], null);
             return Craft::$app->controller
                 ->redirect('craft-export-csv');
         }
