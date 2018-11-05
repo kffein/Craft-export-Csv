@@ -5,9 +5,9 @@
  * Description
  *
  * @link      http://kffein.com
- * @copyright Copyright (c) 2018 Joel Lachance
- * 
- * 
+ * @copyright Copyright (c) 2018 KFFEIN
+ *
+ *
  */
 
 namespace kffein\craftexportcsv;
@@ -16,25 +16,19 @@ use kffein\craftexportcsv\services\Reports;
 use kffein\craftexportcsv\services\Exports;
 use kffein\craftexportcsv\variables\CraftExportCsvVariable;
 use kffein\craftexportcsv\models\Settings;
-use kffein\craftexportcsv\jobs\CsvRowsJob;
-
 use Craft;
 use craft\base\Plugin;
-use craft\services\Plugins;
-use craft\events\PluginEvent;
-use craft\queue\Queue;
 use craft\web\twig\variables\CraftVariable;
 use craft\web\UrlManager;
 use craft\helpers\UrlHelper;
 use craft\events\RegisterUrlRulesEvent;
-
 use yii\base\Event;
 use yii\db\Query;
 
 /**
  * Craft Export Csv Plugin
  *
- * @author    Joel Lachance
+ * @author    KFFEIN
  * @package   CraftExportCsv
  * @since     1.0.1
  *
@@ -58,7 +52,7 @@ class CraftExportCsv extends Plugin
 
     const FIELD_TYPE_HANDLE = 'handle';
     const FIELD_TYPE_CONCAT_HANDLE = 'concat-handle';
-    const FIELD_TYPE_CUSTOM_QUERY = 'custom-query'; 
+    const FIELD_TYPE_CUSTOM_QUERY = 'custom-query';
 
     // Public Properties
     // =========================================================================
@@ -72,7 +66,6 @@ class CraftExportCsv extends Plugin
      * @var bool
      */
     public $hasCpSettings = true;
-
 
     // Public Methods
     // =========================================================================
@@ -91,7 +84,7 @@ class CraftExportCsv extends Plugin
     public function init()
     {
         parent::init();
-        
+
         self::$plugin = $this;
 
         $this->setComponents([
@@ -121,7 +114,6 @@ class CraftExportCsv extends Plugin
                 $variable = $event->sender;
                 $variable->set('craftExportCsv', CraftExportCsvVariable::class);
                 $variable->set('exportsService', Exports::class);
-
             }
         );
 
@@ -140,7 +132,7 @@ class CraftExportCsv extends Plugin
         $menuItem = parent::getCpNavItem();
         $menuItem['subnav'] = [
             'reports' => [
-                'label' => Craft::t('craft-export-csv', 'reports-label'), 
+                'label' => Craft::t('craft-export-csv', 'reports-label'),
                 'url' => 'craft-export-csv'
             ],
             'settings' => [
@@ -148,7 +140,7 @@ class CraftExportCsv extends Plugin
                 'url' => 'craft-export-csv/settings'
             ]
         ];
-        
+
         return $menuItem;
     }
 
@@ -177,15 +169,15 @@ class CraftExportCsv extends Plugin
         return new Settings();
     }
 
-    
-    private function verifyQueueStates(){
+    private function verifyQueueStates()
+    {
         $query = (new Query())->from('{{%queue}}');
         $jobInfo = $query
-        ->select(['id','job','fail','timeUpdated','description'])
+        ->select(['id', 'job', 'fail', 'timeUpdated', 'description'])
         ->all();
         foreach ($jobInfo as $job) {
-            if($job['description'] == 'Exporting Csv' && !$job['fail'] && $job['timeUpdated']){
-                if(time() - $job['timeUpdated'] > 15){
+            if ($job['description'] == 'Exporting Csv' && !$job['fail'] && $job['timeUpdated']) {
+                if (time() - $job['timeUpdated'] > 15) {
                     Craft::$app->queue->retry($job['id']);
                 }
             }

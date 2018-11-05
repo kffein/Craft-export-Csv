@@ -2,7 +2,7 @@
   "name": "kffein/craft-export-csv",
   "description": "A plugin to export entries to CSV files.",
   "type": "craft-plugin",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "keywords": [
     "craft",
     "cms",
@@ -17,11 +17,7 @@
   "license": "MIT",
   "authors": [
     {
-      "name": "Joel Lachance",
-      "homepage": "http://kffein.com"
-    },
-    {
-      "name": "Camille Boissel",
+      "name": "KFFEIN",
       "homepage": "http://kffein.com"
     }
   ],

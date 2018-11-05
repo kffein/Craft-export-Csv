@@ -5,7 +5,7 @@
  * Description
  *
  * @link      http://kffein.com
- * @copyright Copyright (c) 2018 Joel Lachance
+ * @copyright Copyright (c) 2018 KFFEIN
  */
 
 namespace kffein\craftexportcsv\models;

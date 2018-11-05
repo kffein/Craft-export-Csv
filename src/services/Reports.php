@@ -5,7 +5,7 @@
  * Description
  *
  * @link      http://kffein.com
- * @copyright Copyright (c) 2018 Joel Lachance
+ * @copyright Copyright (c) 2018 KFFEIN
  */
 
 namespace kffein\craftexportcsv\services;
@@ -20,7 +20,7 @@ use craft\elements\Entry;
 /**
  * Reports Service
  *
- * @author    Joel Lachance
+ * @author    KFFEIN
  * @package   CraftExportCsv
  * @since     1.0.1
  */
@@ -104,7 +104,7 @@ class Reports extends Component
         $export = $this->setExportTemporaryName($export);
 
         // Get the number of rows the job should be divided
-        $numberOfRows = $export['numberOfRows'];
+        $numberOfRows = $export['numberOfRows'] ? $export['numberOfRows'] : 100;
 
         // Get all id of all the entries that we want to export
         $entriesId = $this->getActiveEntriesId($export['sectionHandle']);

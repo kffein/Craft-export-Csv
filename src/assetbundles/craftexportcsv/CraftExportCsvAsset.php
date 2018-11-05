@@ -5,19 +5,18 @@
  * Description
  *
  * @link      http://kffein.com
- * @copyright Copyright (c) 2018 Joel Lachance
+ * @copyright Copyright (c) 2018 KFFEIN
  */
 
 namespace kffein\craftexportcsv\assetbundles\CraftExportCsv;
 
-use Craft;
 use craft\web\AssetBundle;
 use craft\web\assets\cp\CpAsset;
 
 /**
  * CraftexportcsvAsset AssetBundle
  *
- * @author    Joel Lachance
+ * @author    KFFEIN
  * @package   CraftExportCsv
  * @since     1.0.1
  */
@@ -32,7 +31,7 @@ class CraftExportCsvAsset extends AssetBundle
     public function init()
     {
         // define the path that your publishable resources live
-        $this->sourcePath = "@kffein/craftexportcsv/assetbundles/craftexportcsv/dist";
+        $this->sourcePath = '@kffein/craftexportcsv/assetbundles/craftexportcsv/dist';
 
         // define the dependencies
         $this->depends = [

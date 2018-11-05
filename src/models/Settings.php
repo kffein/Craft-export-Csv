@@ -5,20 +5,18 @@
  * Description
  *
  * @link      http://kffein.com
- * @copyright Copyright (c) 2018 Joel Lachance
+ * @copyright Copyright (c) 2018 KFFEIN
  */
 
 namespace kffein\craftexportcsv\models;
 
 use kffein\craftexportcsv\CraftExportCsv;
-
-use Craft;
 use craft\base\Model;
 
 /**
  * CraftExportCsv Settings Model
  *
- * @author    Joel Lachance
+ * @author    KFFEIN
  * @package   CraftExportCsv
  * @since     1.0.1
  */

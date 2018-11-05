@@ -10,7 +10,7 @@ This plugin requires Craft CMS 3.0.0-beta.23 or later.
 
 To install the plugin, follow these instructions.
 
-1. In the Control Panel, go to Settings → Plugins and click the “Install” button for craft-export-csv.
+1. In the Control Panel, go to Plugin Store, search for "Export CSV" and install the plugin.
 
 ## Overview
 

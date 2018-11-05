@@ -5,7 +5,7 @@
  * Description
  *
  * @link      http://kffein.com
- * @copyright Copyright (c) 2018 Joel Lachance
+ * @copyright Copyright (c) 2018 KFFEIN
  */
 
 /**
@@ -16,7 +16,7 @@
  *
  * http://www.yiiframework.com/doc-2.0/guide-tutorial-i18n.html
  *
- * @author    Joel Lachance
+ * @author    KFFEIN
  * @package   CraftExportCsv
  * @since     1.0.1
  */
@@ -47,4 +47,5 @@ return [
     'no-reports' => 'Aucun rapport configuré.',
     'configure-report' => 'Configurer un rapport',
     'no-result' => 'Aucune entrée à télécharger',
+    'reports-list' => 'Liste de rapport',
 ];

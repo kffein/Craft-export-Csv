@@ -4,8 +4,8 @@
  *
  * craft-export-csv Settings.twig
  *
- * @author    Joel Lachance
- * @copyright Copyright (c) 2018 Joel Lachance
+ * @author    KFFEIN
+ * @copyright Copyright (c) 2018 KFFEIN
  * @link      http://kffein.com
  * @package   CraftExportCsv
  * @since     1.0.1
@@ -74,25 +74,25 @@
     })}}
 
     <div class="heading">
-        <h1>List of reports</h1>
+        <h1>{{ 'reports-list'|t('craft-export-csv') }}</h1>
     </div>
 
     {% if settings.exports is empty %}
         <hr>
-        <p>No reports</p>
+        <p>{{ 'no-reports'|t('craft-export-csv') }}</p>
     {% endif %}
 
     <div id="reports-list" class="field">
         {% for export in settings.exports %}
             <hr/>
             <div>
+            <p>{{ export.sectionHandle }}</p>
             <p>{{ export.filename }}</p>
             <a href="{{ actionUrl('craft-export-csv/settings/delete-export', { id: export.id }) }}" class="btn submit" >{{ 'delete'|t('craft-export-csv') }}</a>
             </div>
             
         {% endfor %}
     </div>
-    
 
     <style type="text/css">
         #reports-list a{
