@@ -72,25 +72,15 @@ class CsvRowsJob extends BaseJob
                     case CraftExportCsv::FIELD_TYPE_CONCAT_HANDLE:
                         $entryData[] = CraftExportCsv::getInstance()->reportsService->replaceFieldsHandle($field['value'], $entry, $this->export['sectionHandle']);
                         break;
-                    // case CraftExportCsv::FIELD_TYPE_CUSTOM_QUERY:
-                    //     try {
-                    //         eval(sprintf('$data = %s;', $field['value']));
-                    //         $entryData[] = $data;
-                    //     } catch (\Exception $e) {
-                    //         /** @todo: handle errors */
-                    //         $entryData[] = '';
-                    //     }
-                    //     break;
                     case CraftExportCsv::FIELD_TYPE_HANDLE:
                     default:
                         // Some field data contains different object.
-                        if (
-                            $entry->{$field['value']} instanceof CategoryQuery
-                            || $entry->{$field['value']} instanceof EntryQuery
-                        ) {
+                        if ($entry->{$field['value']} instanceof CategoryQuery || $entry->{$field['value']} instanceof EntryQuery) {
                             $entryData[] = CraftExportCsv::getInstance()->reportsService->getTitles($entry->{$field['value']}->all());
                         } elseif ($entry->{$field['value']} instanceof DateTime) {
                             $entryData[] = $entry->{$field['value']}->format('Y-m-d H:i:s');
+                        } elseif (is_array($entry->{$field['value']}) || is_object($entry->{$field['value']})) {
+                            $entryData[] = json_encode($entry->{$field['value']});
                         } else {
                             $entryData[] = $entry->{$field['value']};
                         }
@@ -104,6 +94,7 @@ class CsvRowsJob extends BaseJob
             $lines[] = $entryData;
         }
 
+        //throw new \Exception($lines);
         // Loop all the lines to insert in the csv file
         // fputs($exportFile, "\xEF\xBB\xBF"); // UTF-8 BOM !!!!!
         foreach ($lines as $line) {
