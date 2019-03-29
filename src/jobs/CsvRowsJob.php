@@ -77,6 +77,8 @@ class CsvRowsJob extends BaseJob
                         // Some field data contains different object.
                         if ($entry->{$field['value']} instanceof CategoryQuery || $entry->{$field['value']} instanceof EntryQuery) {
                             $entryData[] = CraftExportCsv::getInstance()->reportsService->getTitles($entry->{$field['value']}->all());
+                        } elseif (is_object($entry->{$field['value']}) && get_class($entry->{$field['value']}) === 'craft\elements\db\AssetQuery') {
+                            $entryData[] = $entry->{$field['value']}->one() !== null ? $entry->{$field['value']}->one()->url : null;
                         } elseif ($entry->{$field['value']} instanceof DateTime) {
                             $entryData[] = $entry->{$field['value']}->format('Y-m-d H:i:s');
                         } elseif (is_array($entry->{$field['value']}) || is_object($entry->{$field['value']})) {
