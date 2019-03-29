@@ -31,6 +31,7 @@ class Export extends Model
     public $id;
     public $sectionHandle;
     public $filename = '{section-handle}-{timestamp}.csv';
+    public $siteId;
 
     /**
      * Temporary porperty of the converted field name everytime the csv is generated.
@@ -72,7 +73,7 @@ class Export extends Model
     public function rules()
     {
         return [
-            [['sectionHandle', 'filename', 'fields'], 'required'],
+            [['sectionHandle', 'filename', 'fields', 'siteId'], 'required'],
             [['sectionHandle', 'filename'], 'string'],
             [['numberOfRows'], 'number'],
         ];

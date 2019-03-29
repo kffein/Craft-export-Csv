@@ -95,6 +95,21 @@ class SettingsController extends BaseController
             ]);
             return null;
         }
+
+        // Validate that the section belong to siteId settings
+        $sectionData = Craft::$app->sections->getSectionByHandle($exportValue['sectionHandle']);
+        $sectionSiteEnabled = array_map(function ($sectionSetting) {
+            return $sectionSetting->siteId;
+        }, Craft::$app->sections->getSectionSiteSettings($sectionData->id));
+        if (!in_array($exportValue['siteId'], $sectionSiteEnabled)) {
+            Craft::$app->getSession()->setError(Craft::t('app', 'The section is invalid for selected site'));
+            // Send the plugin back to the template
+            Craft::$app->getUrlManager()->setRouteParams([
+                 'plugin' => $this->plugin
+             ]);
+            return null;
+        }
+
         // Create export from model and set all required value.
         $newExport = new Export();
         $newExport->setAttributes($exportValue);

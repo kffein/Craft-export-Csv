@@ -49,6 +49,13 @@ class CsvRowsJob extends BaseJob
         }
         $exportFile = fopen($folder . $this->export['lastSavedFilename'], 'a');
 
+        $optionSiteId = isset($this->export['siteId']) ? $this->export['siteId'] : null;
+        $requestSite = Craft::$app->sites->getSiteById((int) $optionSiteId) !== null
+            ? Craft::$app->sites->getSiteById((int) $optionSiteId)->id
+            : Craft::$app->sites->primarySite->id;
+
+        Craft::$app->sites->setCurrentSite($requestSite);
+
         // Prepare the properties for the loop
         $lines = [];
         $jobDone = 0;
