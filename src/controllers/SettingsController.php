@@ -63,7 +63,7 @@ class SettingsController extends BaseController
         }
 
         $sites = Craft::$app->sites->allSites;
-        $sitesOptions = array_map(function($site){
+        $sitesOptions = array_map(function ($site) {
             return [
                 'label' => $site->name,
                 'value' => $site->id
@@ -72,14 +72,12 @@ class SettingsController extends BaseController
 
         $status_list = ['STATUS_ARCHIVED', 'STATUS_DISABLED', 'STATUS_ENABLED', 'STATUS_EXPIRED', 'STATUS_LIVE', 'STATUS_PENDING'];
 
-        $statusOptions = array_map(function($status){
+        $statusOptions = array_map(function ($status) {
             return [
                 'label' => ucfirst(strtolower(explode('_', $status)[1])),
                 'value' => ucfirst(strtolower(explode('_', $status)[1]))
             ];
         }, $status_list);
-
-
 
         return $this->renderTemplate(
             'craft-export-csv/settings',
