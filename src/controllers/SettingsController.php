@@ -62,11 +62,21 @@ class SettingsController extends BaseController
           ];
         }
 
+        $sites = Craft::$app->sites->allSites;
+        $sitesOptions = array_map(function($site){
+            return [
+                'label' => $site->name,
+                'value' => $site->id
+            ];
+        }, $sites);
+
+
         return $this->renderTemplate(
             'craft-export-csv/settings',
             [
                 'settings' => $this->settings,
                 'sectionsOptions' => $sectionsOptions,
+                'sitesOptions' => $sitesOptions,
                 'fieldTypeOptions' => $this->plugin->reportsService->getFieldTypeOptions(),
             ]
         );
@@ -98,9 +108,11 @@ class SettingsController extends BaseController
 
         // Validate that the section belong to siteId settings
         $sectionData = Craft::$app->sections->getSectionByHandle($exportValue['sectionHandle']);
+
         $sectionSiteEnabled = array_map(function ($sectionSetting) {
             return $sectionSetting->siteId;
         }, Craft::$app->sections->getSectionSiteSettings($sectionData->id));
+
         if (!in_array($exportValue['siteId'], $sectionSiteEnabled)) {
             Craft::$app->getSession()->setError(Craft::t('app', 'The section is invalid for selected site'));
             // Send the plugin back to the template

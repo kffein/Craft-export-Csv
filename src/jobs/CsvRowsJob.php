@@ -16,6 +16,7 @@ use craft\queue\BaseJob;
 use craft\elements\Entry;
 use craft\elements\db\CategoryQuery;
 use craft\elements\db\EntryQuery;
+use Craft;
 
 class CsvRowsJob extends BaseJob
 {

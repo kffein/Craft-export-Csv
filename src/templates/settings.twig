@@ -36,10 +36,17 @@
     {{ forms.selectField({
         label: 'section-handle-label'|t('craft-export-csv'),
         instructions: 'section-handle-instructions'|t('craft-export-csv'),
-        id: 'sectionHandle',
+        id: 'siteId',
         name: 'settings[sectionHandle]',
-        
         options: sectionsOptions,
+    })}}
+
+    {{ forms.selectField({
+        label: 'Sites',
+        id: 'sectionHandle',
+        name: 'settings[siteId]',
+        
+        options: sitesOptions,
     })}}
 
     {{ forms.textField({

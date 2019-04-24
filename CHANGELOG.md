@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.0.7 - 2019-04-24
+### Added
+- Add support for assets. Return the url of the first one.
+- Add support for multisites.
+
 ## 1.0.6 - 2018-12-10
 ### Fix
 - Fix array/object export fields data. Convert to string with json_encode()
