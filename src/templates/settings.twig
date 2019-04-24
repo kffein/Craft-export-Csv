@@ -36,11 +36,26 @@
     {{ forms.selectField({
         label: 'section-handle-label'|t('craft-export-csv'),
         instructions: 'section-handle-instructions'|t('craft-export-csv'),
-        id: 'sectionHandle',
+        id: 'siteId',
         name: 'settings[sectionHandle]',
-        
         options: sectionsOptions,
     })}}
+
+    {{ forms.selectField({
+        label: 'sites-handle-label'|t('craft-export-csv'),
+        id: 'sectionHandle',
+        name: 'settings[siteId]',
+        
+        options: sitesOptions,
+    })}}
+
+    {{ forms.checkboxSelectField({
+        label: 'entryStatus-handle-label'|t('craft-export-csv'),
+        id: 'entryStatus',
+        name: 'settings[entryStatus]',
+        values: ['Enabled', 'Live'],
+        options: statusOptions
+    }) }}
 
     {{ forms.textField({
         label: 'filename-label'|t('craft-export-csv'),

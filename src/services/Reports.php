@@ -107,7 +107,7 @@ class Reports extends Component
         $numberOfRows = $export['numberOfRows'] ? $export['numberOfRows'] : 100;
 
         // Get all id of all the entries that we want to export
-        $entriesId = $this->getActiveEntriesId($export['sectionHandle']);
+        $entriesId = $this->getActiveEntriesId($export['sectionHandle'], null, $export['entryStatus']);
 
         // Overwrite file with just the header before adding rows
         $this->writeHeader($export['fields'], $export['lastSavedFilename']);
@@ -207,11 +207,11 @@ class Reports extends Component
      * @param int $limit
      * @return array
      */
-    public function getActiveEntriesId($sectionHandle, $limit = null)
+    public function getActiveEntriesId($sectionHandle, $limit = null, array $status)
     {
         return Entry::find()
             ->section($sectionHandle)
-            ->status(Entry::STATUS_ENABLED)
+            ->status($status)
             ->limit($limit)
             ->ids();
     }
@@ -226,7 +226,7 @@ class Reports extends Component
     {
         return Entry::find()
             ->id($ids)
-            ->status(Entry::STATUS_ENABLED)
+            ->status(null)
             ->limit(null)
             ->all();
     }

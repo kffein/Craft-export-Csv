@@ -29,6 +29,8 @@ return [
     'numberOfRows-label' => 'Number of rows',
     'numberOfRows-instructions' => 'Enter the number of rows limit for each query',
     'section-handle-label' => 'Entries to export',
+    'sites-handle-label' => 'Sites',
+    'entryStatus-handle-label' => 'Entries status',
     'section-handle-instructions' => 'Choose the entry type you want to export.',
     'filename-label' => 'File Name',
     'filename-instructions' => 'Keys available: {timestamp}, {Y}, {d}, {m}, {H}, {i}, {section-handle}',

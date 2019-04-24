@@ -29,6 +29,8 @@ return [
     'numberOfRows-label' => 'Nombre d\'entrées',
     'numberOfRows-instructions' => 'Entrer le nombre d\'entrées max pour chaque requête.',
     'section-handle-label' => 'Entrée à exporter',
+    'sites-handle-label' => 'Sites',
+    'entryStatus-handle-label' => 'Status des entrées',
     'section-handle-instructions' => 'Sélectionnez le type d’entrée que vous souhaitez exporter.',
     'filename-label' => 'Nom du fichier',
     'filename-instructions' => 'Clés disponibiles: {timestamp}, {Y}, {d}, {m}, {H}, {i}, {section-handle}',
