@@ -9,13 +9,10 @@
  * @package   CraftExportCsv
  * @since     1.0.1
  */
-.last-modified{
-	float: right;
-	margin-top: 5px;
-}
 
-.export-button-actions{
-	float:left;
+ .reports-section{
+  display: flex;
+  justify-content: space-between;
 }
 
 .export-button-actions a{
