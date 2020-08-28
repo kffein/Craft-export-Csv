@@ -37,6 +37,13 @@ class SettingsController extends BaseController
      */
     public function init()
     {
+        /**
+         * For unknow reason Craft Controller set request + response to string
+         * Manually reset the value fix the problem
+         */
+        $this->request = Craft::$app->request;
+        $this->response = Craft::$app->response;
+
         $this->plugin = CraftExportCsv::$plugin;
         $this->settings = $this->plugin->getSettings();
     }
