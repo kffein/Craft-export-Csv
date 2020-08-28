@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.0.9 - 2020-08-28
+### Added
+- Fix controllers errors
+- Update UI for Craft 3.5
+
 ## 1.0.8 - 2019-04-24
 ### Added
 - Add support for entries status
