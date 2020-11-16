@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2018 KFFEIN
  */
 
-namespace kffein\craftexportcsv\assetbundles\CraftExportCsv;
+namespace kffein\craftexportcsv\assetbundles\craftexportcsv;
 
 use craft\web\AssetBundle;
 use craft\web\assets\cp\CpAsset;
