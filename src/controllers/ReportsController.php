@@ -112,22 +112,22 @@ class ReportsController extends Controller
 
         $folder = CRAFT_BASE_PATH . '/storage/reports/';
 
-        if (file_exists($folder . $export['lastSavedFilename'])) {
-            // Downlading the file
-            header('Content-Encoding: UTF-8');
-            header('Content-Type: text/csv; charset=UTF-8');
-            header(
-                sprintf('Content-Disposition: attachment; filename=%s', ElementHelper::createSlug($export['lastSavedFilename']))
-            );
-            readfile($folder . $export['lastSavedFilename']);
-        } else {
-            // If it does not exist we tell the export setting to reset his
-            // dateUpdated so it knows it need to be regenerated
-            Craft::$app->getSession()->setError('File not found');
-            CraftExportCsv::getInstance()->exportsService->setExportDate($export['id'], null);
-            return Craft::$app->controller
-                ->redirect('craft-export-csv');
-        }
+        // if (file_exists($folder . $export['lastSavedFilename'])) {
+        // Downlading the file
+        header('Content-Encoding: UTF-8');
+        header('Content-Type: text/csv; charset=UTF-8');
+        header(
+            sprintf('Content-Disposition: attachment; filename=%s', ElementHelper::normalizeSlug($export['lastSavedFilename']))
+        );
+        readfile($folder . $export['lastSavedFilename']);
+        // } else {
+        //     // If it does not exist we tell the export setting to reset his
+        //     // dateUpdated so it knows it need to be regenerated
+        //     Craft::$app->getSession()->setError('File not found');
+        //     CraftExportCsv::getInstance()->exportsService->setExportDate($export['id'], null);
+        //     return Craft::$app->controller
+        //         ->redirect('craft-export-csv');
+        // }
 
         die();
     }
