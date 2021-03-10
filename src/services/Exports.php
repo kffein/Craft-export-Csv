@@ -63,10 +63,11 @@ class Exports extends Component
      * @param string $id
      * @return kffein\craftexportcsv\models\Export
      */
-    public function getExportById($id){
+    public function getExportById($id)
+    {
         // Loop all export in settings
-        foreach($this->settings->exports as $export){
-            if($export['id'] === $id){
+        foreach ($this->settings->exports as $export) {
+            if ($export['id'] === $id) {
                 // Found one that match the id
                 return $export;
             }
@@ -80,11 +81,12 @@ class Exports extends Component
      * @param string $id
      * @return bool
      */
-    public function deleteExportById($id){
+    public function deleteExportById($id)
+    {
         $oneDeleted = false;
         // Loop all export and delete from settings by keys found
         foreach ($this->settings->exports as $key => $export) {
-            if($export['id'] == $id){
+            if ($export['id'] == $id) {
                 unset($this->settings->exports[$key]);
                 $oneDeleted = true;
             }
@@ -96,12 +98,14 @@ class Exports extends Component
      * Update export date if report has been generated
      * @param string $id
      */
-    public function updateExportDate($id){
+    public function updateExportDate($id)
+    {
         foreach ($this->settings->exports as $key => $export) {
-            if($export['id'] == $id){
+            if ($export['id'] == $id) {
                 $this->settings->exports[$key]['dateUpdated'] = time();
             }
         }
+        
         Craft::$app->getPlugins()->savePluginSettings($this->plugin, $this->settings->exports);
     }
 
@@ -109,8 +113,9 @@ class Exports extends Component
      * Return formated date
      * @param int $timestamp
      */
-    public function getDateUpdatedFormated($timestamp){
-        return date("F j, Y, g:i a",$timestamp);
+    public function getDateUpdatedFormated($timestamp)
+    {
+        return date("F j, Y, g:i a", $timestamp);
     }
 
     /**
@@ -118,9 +123,10 @@ class Exports extends Component
      * @param string $id
      * @param int $value
      */
-    public function setExportDate($id,$value){
+    public function setExportDate($id, $value)
+    {
         foreach ($this->settings->exports as $key => $export) {
-            if($export['id'] == $id){
+            if ($export['id'] == $id) {
                 $this->settings->exports[$key]['dateUpdated'] = $value;
             }
         }
