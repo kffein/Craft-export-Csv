@@ -11,8 +11,10 @@ namespace kffein\craftexportcsv\controllers;
 
 use kffein\craftexportcsv\CraftExportCsv;
 use Craft;
+use craft\helpers\ArrayHelper;
 use craft\web\Controller;
 use craft\helpers\ElementHelper;
+use craft\helpers\StringHelper;
 
 class ReportsController extends Controller
 {
@@ -32,14 +34,7 @@ class ReportsController extends Controller
      * @inheritdoc
      */
     public function init()
-    {
-        /**
-         * For unknow reason Craft Controller set request + response to string
-         * Manually reset the value fix the problem
-         */
-        $this->request = Craft::$app->request;
-        $this->response = Craft::$app->response;
-
+    {   
         $this->plugin = CraftExportCsv::$plugin;
         $this->settings = $this->plugin->getSettings();
     }
@@ -55,16 +50,19 @@ class ReportsController extends Controller
 
         // Fetch all exports data to include in the template
         $exportsInfos = [];
+        $folder = CRAFT_BASE_PATH . '/storage/reports/';
+
         if (!empty($this->settings->exports)) {
             foreach ($this->settings->exports as $export) {
                 if ($export['sectionHandle']) {
                     $section = Craft::$app->getSections()->getSectionByHandle($export['sectionHandle']);
                     $export['section'] = $section;
                 }
+                $export['fileExists'] = file_exists($folder . $export['lastSavedFilename']);
                 $exportsInfos[] = $export;
             }
         }
-
+        
         return $this->renderTemplate('craft-export-csv/reports/index', ['exports' => $exportsInfos]);
     }
 
@@ -91,9 +89,9 @@ class ReportsController extends Controller
             return Craft::$app->controller
                 ->redirect('craft-export-csv');
         }
-
+        
         $this->plugin->reportsService->generateCsvLines($export);
-
+        
         // Redirect with notice to start the queue
         Craft::$app->getSession()->setNotice('Csv generator started');
         return Craft::$app->controller
@@ -117,7 +115,7 @@ class ReportsController extends Controller
         header('Content-Encoding: UTF-8');
         header('Content-Type: text/csv; charset=UTF-8');
         header(
-            sprintf('Content-Disposition: attachment; filename=%s', ElementHelper::normalizeSlug($export['lastSavedFilename']))
+            sprintf('Content-Disposition: attachment; filename=%s', $this->_normalizeSlug($export['lastSavedFilename']))
         );
         readfile($folder . $export['lastSavedFilename']);
         // } else {
@@ -130,5 +128,31 @@ class ReportsController extends Controller
         // }
 
         die();
+    }
+
+    private function _normalizeSlug(string $slug): string
+    {
+        // Special case for the homepage
+        if ($slug === craft\base\Element::HOMEPAGE_URI) {
+            return $slug;
+        }
+
+        // Remove HTML tags
+        $slug = StringHelper::stripHtml($slug);
+
+        // Remove inner-word punctuation
+        $slug = preg_replace('/[\'"‘’“”\[\]\(\)\{\}:]/u', '', $slug);
+
+        // Make it lowercase
+        $generalConfig = Craft::$app->getConfig()->getGeneral();
+        if (!$generalConfig->allowUppercaseInSlug) {
+            $slug = mb_strtolower($slug);
+        }
+
+        // Get the "words". Split on anything that is not alphanumeric or allowed punctuation
+        // Reference: http://www.regular-expressions.info/unicode.html
+        $words = ArrayHelper::filterEmptyStringsFromArray(preg_split('/[^\p{L}\p{N}\p{M}\._\-]+/u', $slug));
+
+        return implode($generalConfig->slugWordSeparator, $words);
     }
 }
