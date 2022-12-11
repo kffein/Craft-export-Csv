@@ -33,7 +33,7 @@ class ReportsController extends Controller
     /**
      * @inheritdoc
      */
-    public function init()
+    public function init(): void
     {
         /**
          * For unknow reason Craft Controller set request + response to string

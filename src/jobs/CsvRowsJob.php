@@ -41,7 +41,7 @@ class CsvRowsJob extends BaseJob
     /**
      * @inheritdoc
      */
-    public function execute($queue)
+    public function execute($queue): void
     {
         // Open the file with append as parameters
         $folder = CRAFT_BASE_PATH . '/storage/reports/';
@@ -123,7 +123,7 @@ class CsvRowsJob extends BaseJob
         $this->setProgress($queue, 1);
     }
 
-    protected function defaultDescription()
+    protected function defaultDescription(): ?string
     {
         return 'Exporting Csv';
     }

@@ -60,12 +60,12 @@ class CraftExportCsv extends Plugin
     /**
      * @var bool
      */
-    public $hasCpSection = true;
+    public bool $hasCpSection = true;
 
     /**
      * @var bool
      */
-    public $hasCpSettings = true;
+    public bool $hasCpSettings = true;
 
     // Public Methods
     // =========================================================================
@@ -127,7 +127,7 @@ class CraftExportCsv extends Plugin
         );
     }
 
-    public function getCpNavItem()
+    public function getCpNavItem(): ?array
     {
         $menuItem = parent::getCpNavItem();
         $menuItem['subnav'] = [
@@ -149,7 +149,7 @@ class CraftExportCsv extends Plugin
      *
      * @inheritdoc
      */
-    public function getSettingsResponse()
+    public function getSettingsResponse(): mixed
     {
         $url = UrlHelper::cpUrl('craft-export-csv/settings');
 
@@ -164,7 +164,7 @@ class CraftExportCsv extends Plugin
      *
      * @return \craft\base\Model|null
      */
-    protected function createSettingsModel()
+    protected function createSettingsModel(): ?\craft\base\Model
     {
         return new Settings();
     }

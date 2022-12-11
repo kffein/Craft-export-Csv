@@ -54,7 +54,7 @@ class Export extends Model
 
     // Public Methods
     // =========================================================================
-    public function init()
+    public function init(): void
     {
         parent::init();
 
@@ -71,7 +71,7 @@ class Export extends Model
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['sectionHandle', 'filename', 'fields', 'siteId', 'entryStatus'], 'required'],
