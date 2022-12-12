@@ -112,7 +112,10 @@
                 <p>{{ export.sectionHandle }}</p>
                 <p><a href="{{ url('craft-export-csv/settings', { id: export.id }) }}">{{ export.filename }}</a></p>
               </div>
-              <a href="{{ actionUrl('craft-export-csv/settings/delete-export', { id: export.id }) }}" class="btn submit" >{{ 'delete'|t('craft-export-csv') }}</a>
+              <div class="flex">
+                <a href="{{ actionUrl('craft-export-csv/settings/duplicate-export', { id: export.id }) }}" class="btn submit" >{{ 'duplicate'|t('craft-export-csv') }}</a>
+                <a href="{{ actionUrl('craft-export-csv/settings/delete-export', { id: export.id }) }}" class="btn submit" >{{ 'delete'|t('craft-export-csv') }}</a>
+              </div>
             </div>
 
         {% endfor %}

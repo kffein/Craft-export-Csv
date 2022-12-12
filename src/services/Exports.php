@@ -11,6 +11,7 @@
 namespace kffein\craftexportcsv\services;
 
 use kffein\craftexportcsv\CraftExportCsv;
+use kffein\craftexportcsv\models\Export;
 
 use Craft;
 use craft\base\Component;
@@ -42,7 +43,7 @@ class Exports extends Component
      */
     public $plugin;
 
-    
+
 
     // Public Methods
     // =========================================================================
@@ -77,6 +78,30 @@ class Exports extends Component
     }
 
     /**
+     * Duplicate from settings an export by id WITHOUT SAVING
+     * @param string $id
+     * @return bool
+     */
+    public function duplicateExportById($id)
+    {
+        $oneDuplicated = false;
+        // Loop all export and duplicate from settings by keys found
+        foreach ($this->settings->exports as $key => $export) {
+            if ($export['id'] == $id) {
+                // Create export from model and set all required value.
+                $exportValue = $this->settings->exports[$key];
+                $exportValue['dateUpdated'] = time();
+                $newExport = new Export();
+                $newExport->setAttributes($exportValue);
+                // Add new export to settings array
+                $this->settings->exports[] = $newExport;
+                $oneDuplicated = true;
+            }
+        }
+        return $oneDuplicated;
+    }
+
+    /**
      * Delete from settings an export by id WITHOUT SAVING
      * @param string $id
      * @return bool
@@ -105,7 +130,7 @@ class Exports extends Component
                 $this->settings->exports[$key]['dateUpdated'] = time();
             }
         }
-        
+
         Craft::$app->getPlugins()->savePluginSettings($this->plugin, $this->settings->exports);
     }
 
