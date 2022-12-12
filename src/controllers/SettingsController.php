@@ -86,6 +86,17 @@ class SettingsController extends BaseController
             ];
         }, $status_list);
 
+        // If the user has selected a particular export, find the details
+        $selectedExport = null;
+        $id = Craft::$app->request->getParam('id');
+        if ($id) {
+          foreach ($this->settings->exports as $export) {
+            if ($id = $export['id']) {
+              $selectedExport = $export;
+            }
+          }
+        }
+
         return $this->renderTemplate(
             'craft-export-csv/settings',
             [
@@ -94,6 +105,7 @@ class SettingsController extends BaseController
                 'sitesOptions' => $sitesOptions,
                 'statusOptions' => $statusOptions,
                 'fieldTypeOptions' => $this->plugin->reportsService->getFieldTypeOptions(),
+                'selectedExport' => $selectedExport,
             ]
         );
     }
@@ -138,12 +150,26 @@ class SettingsController extends BaseController
             return null;
         }
 
-        // Create export from model and set all required value.
-        $newExport = new Export();
-        $newExport->setAttributes($exportValue);
+        $id = Craft::$app->request->getParam('id');
 
-        // Add new export to settings array
-        $this->settings->exports[] = $newExport;
+        if ($id) {
+          // Update existing export using model
+          $export = $this->plugin->exportsService->getExportById($id);
+          $existingExport = new Export();
+          $existingExport->setAttributes($exportValue);
+          foreach ($this->settings->exports as $key => $export) {
+            if ($id = $export['id']) {
+              $this->settings->exports[$key] = $existingExport;
+            }
+          }
+        } else {
+          // Create export from model and set all required value.
+          $newExport = new Export();
+          $newExport->setAttributes($exportValue);
+          // Add new export to settings array
+          $this->settings->exports[] = $newExport;
+        }
+
         if (!Craft::$app->getPlugins()->savePluginSettings($this->plugin, $this->settings->exports)) {
             Craft::$app->getSession()->setError(Craft::t('app', 'Couldn’t save plugin settings.'));
 
@@ -157,7 +183,8 @@ class SettingsController extends BaseController
 
         Craft::$app->getSession()->setNotice(Craft::t('app', 'Plugin settings updated.'));
 
-        return $this->redirectToPostedUrl();
+        // return $this->redirectToPostedUrl();
+        return $this->redirect('craft-export-csv/settings');
     }
 
     /**
