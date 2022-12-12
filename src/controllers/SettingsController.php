@@ -89,6 +89,7 @@ class SettingsController extends BaseController
         // If the user has selected a particular export, find the details
         $selectedExport = null;
         $id = Craft::$app->request->getParam('id');
+
         if ($id) {
           foreach ($this->settings->exports as $export) {
             if ($id = $export['id']) {
@@ -150,7 +151,7 @@ class SettingsController extends BaseController
             return null;
         }
 
-        $id = Craft::$app->request->getParam('id');
+        $id = $exportValue['id'] ?? null;
 
         if ($id) {
           // Update existing export using model
@@ -158,7 +159,7 @@ class SettingsController extends BaseController
           $existingExport = new Export();
           $existingExport->setAttributes($exportValue);
           foreach ($this->settings->exports as $key => $export) {
-            if ($id = $export['id']) {
+            if ($id == $export['id']) {
               $this->settings->exports[$key] = $existingExport;
             }
           }

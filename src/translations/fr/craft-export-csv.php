@@ -32,6 +32,8 @@ return [
     'sites-handle-label' => 'Sites',
     'entryStatus-handle-label' => 'Status des entrées',
     'section-handle-instructions' => 'Sélectionnez le type d’entrée que vous souhaitez exporter.',
+    'name-label' => 'Nom de l\'export',
+    'name-instructions' => 'Choisir un nom descriptif pour l\'export',
     'filename-label' => 'Nom du fichier',
     'filename-instructions' => 'Clés disponibiles: {timestamp}, {Y}, {d}, {m}, {H}, {i}, {section-handle}',
     'fields-label' => 'Colonnes',
@@ -44,8 +46,9 @@ return [
     'field-value' => 'Valeur',
 
     // Reports
-    'generate' => 'Génerer le fichier {filename} de la section : {sectionName}',
-    'download' => 'Télécharger le fichier {filename}',
+    'generate-heading' => 'Générer un export pour la section: {sectionName}',
+    'generate' => 'Générer le fichier csv {filename}',
+    'download' => 'Télécharger le fichier csv {filename}',
     'no-reports' => 'Aucun rapport configuré.',
     'configure-report' => 'Configurer un rapport',
     'no-result' => 'Aucune entrée à télécharger',

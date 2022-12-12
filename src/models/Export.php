@@ -29,6 +29,7 @@ class Export extends Model
      * @var string
      */
     public $id;
+    public $name;
     public $sectionHandle;
     public $filename = '{section-handle}-{timestamp}.csv';
     public $siteId;
@@ -74,8 +75,8 @@ class Export extends Model
     public function rules(): array
     {
         return [
-            [['sectionHandle', 'filename', 'fields', 'siteId', 'entryStatus'], 'required'],
-            [['sectionHandle', 'filename'], 'string'],
+            [['name', 'sectionHandle', 'filename', 'fields', 'siteId', 'entryStatus'], 'required'],
+            [['name', 'sectionHandle', 'filename'], 'string'],
             [['numberOfRows'], 'number'],
         ];
     }

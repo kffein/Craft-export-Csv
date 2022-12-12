@@ -10,7 +10,19 @@
  * @since     1.0.1
  */
 
- .reports-section{
+.flex {
+  display: flex;
+}
+
+.space-between {
+  justify-content: space-between;
+}
+
+.align-start {
+  align-items: flex-start;
+}
+
+.reports-section{
   display: flex;
   justify-content: space-between;
 }

@@ -90,7 +90,7 @@ class Exports extends Component
             if ($export['id'] == $id) {
                 // Create export from model and set all required value.
                 $exportValue = $this->settings->exports[$key];
-                $exportValue['dateUpdated'] = time();
+                $exportValue['id'] = null;
                 $newExport = new Export();
                 $newExport->setAttributes($exportValue);
                 // Add new export to settings array

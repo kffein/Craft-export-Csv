@@ -11,15 +11,18 @@
     {% for export in exports %}
       {% if export.section is defined %}
         {{ loop.index > 1 ? '<hr />'}}
+        <h2>{{ 'generate-heading'|t('craft-export-csv', {sectionName: export.section.name }) }}</h2>
         <div class="reports-section">
-          <div class="export-button-actions">
-            <a href="{{ actionUrl('craft-export-csv/reports/generate', { id: export.id }) }}" class="btn submit" >{{ 'generate'|t('craft-export-csv', {sectionName: export.section.name,filename: export.filename }) }}</a>
-            <br />
-            <a href="{{ actionUrl('craft-export-csv/reports/download', { id: export.id }) }}" class="btn submit {{ export.fileExists ?:'disabled'}}">{{ 'download'|t('craft-export-csv', {filename: export.filename}) }}</a>
+          <div class="flex align-start">
+            <p><a href="{{ url('craft-export-csv/settings', { id: export.id }) }}">{{ export.name }}</a></p>
+            <div class="last-modified">
+              <label for="last-modified__{{export.id}}">Last export: </label>
+              <span id="last-modified__{{export.id}}">{{export.dateUpdated is defined and export.dateUpdated is not empty ? craft.exportsService.getDateUpdatedFormated(export.dateUpdated):'none'}}</span>
+            </div>
           </div>
-          <div class="last-modified">
-            <label for="last-modified__{{export.id}}">Last updated : </label>
-            <span id="last-modified__{{export.id}}">{{export.dateUpdated is defined and export.dateUpdated is not empty ? craft.exportsService.getDateUpdatedFormated(export.dateUpdated):'none'}}</span>
+          <div class="export-button-actions">
+            <a title="{{ 'generate'|t('craft-export-csv', {filename: export.filename }) }}" href="{{ actionUrl('craft-export-csv/reports/generate', { id: export.id }) }}" class="btn submit" >generate</a>
+            <a title="{{ 'download'|t('craft-export-csv', {filename: export.filename }) }}" href="{{ actionUrl('craft-export-csv/reports/download', { id: export.id }) }}" class="btn submit {{ export.fileExists ?:'disabled'}}">download</a>
           </div>
         </div>
       {% endif %}
