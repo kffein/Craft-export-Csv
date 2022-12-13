@@ -83,7 +83,9 @@ class CsvRowsJob extends BaseJob
                     case CraftExportCsv::FIELD_TYPE_HANDLE:
                     default:
                         // Some field data contains different object.
-                        if ($entry->{$field['value']} instanceof CategoryQuery || $entry->{$field['value']} instanceof EntryQuery) {
+                        if (!$field['value']) {
+                          $entryData[] = '';
+                        } elseif ($entry->{$field['value']} instanceof CategoryQuery || $entry->{$field['value']} instanceof EntryQuery) {
                             $entryData[] = CraftExportCsv::getInstance()->reportsService->getTitles($entry->{$field['value']}->all());
                         } elseif (is_object($entry->{$field['value']}) && get_class($entry->{$field['value']}) === 'craft\elements\db\AssetQuery') {
                             $entryData[] = $entry->{$field['value']}->one() !== null ? $entry->{$field['value']}->one()->url : null;
