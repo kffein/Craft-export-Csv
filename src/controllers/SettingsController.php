@@ -92,7 +92,7 @@ class SettingsController extends BaseController
 
         if ($id) {
           foreach ($this->settings->exports as $export) {
-            if ($id = $export['id']) {
+            if ($id == $export['id']) {
               $selectedExport = $export;
             }
           }
