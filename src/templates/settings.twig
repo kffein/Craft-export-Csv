@@ -79,6 +79,15 @@
         required:true,
     })}}
 
+    {{ forms.checkboxSelectField({
+        label: 'expireEntries-label'|t('craft-export-csv'),
+        instructions: 'expireEntries-instructions'|t('craft-export-csv'),
+        id: 'expireEntries',
+        name: 'settings[expireEntries]',
+        values: selectedExport['expireEntries'] ?? ['Expire exported entries'],
+        options: expireEntriesOptions,
+    }) }}
+
     {{ forms.editableTableField({
         label: 'fields-label'|t('craft-export-csv'),
         instructions: 'fields-instructions'|t('craft-export-csv'),

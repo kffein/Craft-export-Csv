@@ -31,6 +31,8 @@ return [
     'section-handle-label' => 'Entries to export',
     'sites-handle-label' => 'Sites',
     'entryStatus-handle-label' => 'Entries status',
+    'expireEntries-label' => 'Expire exported entries',
+    'expireEntries-instructions' => 'Choose whether to set the status of entries to expired once they\'ve been exported.',
     'section-handle-instructions' => 'Choose the entry type you want to export.',
     'name-label' => 'Name of the export',
     'name-instructions' => 'Choose a descriptive name for the export',

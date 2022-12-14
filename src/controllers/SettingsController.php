@@ -86,6 +86,15 @@ class SettingsController extends BaseController
             ];
         }, $status_list);
 
+        $expire_entries_list = ['Expire exported entries'];
+
+        $expireEntriesOptions = array_map(function ($status) {
+            return [
+                'label' => $status,
+                'value' => $status,
+            ];
+        }, $expire_entries_list);
+
         // If the user has selected a particular export, find the details
         $selectedExport = null;
         $id = Craft::$app->request->getParam('id');
@@ -105,6 +114,7 @@ class SettingsController extends BaseController
                 'sectionsOptions' => $sectionsOptions,
                 'sitesOptions' => $sitesOptions,
                 'statusOptions' => $statusOptions,
+                'expireEntriesOptions' => $expireEntriesOptions,
                 'fieldTypeOptions' => $this->plugin->reportsService->getFieldTypeOptions(),
                 'selectedExport' => $selectedExport,
             ]

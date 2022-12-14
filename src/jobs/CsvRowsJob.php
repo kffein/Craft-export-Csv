@@ -20,6 +20,11 @@ use Craft;
 
 class CsvRowsJob extends BaseJob
 {
+    // Constants
+    // =========================================================================
+    const MYSQL_DATETIME = 'Y-m-d H:i:s';
+    const UTC = 'UTC';
+
     // Public properties
     ////////////////////////////////////////////////////
 
@@ -51,6 +56,7 @@ class CsvRowsJob extends BaseJob
         $exportFile = fopen($folder . $this->export['lastSavedFilename'], 'a');
 
         $optionSiteId = isset($this->export['siteId']) ? $this->export['siteId'] : null;
+        $optionExpireEntries = isset($this->export['expireEntries']) ? count($this->export['expireEntries']) : null;
         $requestSite = Craft::$app->sites->getSiteById((int) $optionSiteId) !== null
             ? Craft::$app->sites->getSiteById((int) $optionSiteId)->id
             : Craft::$app->sites->primarySite->id;
@@ -98,6 +104,15 @@ class CsvRowsJob extends BaseJob
                         }
                 }
             }
+
+            if ($optionExpireEntries ?? null) {
+              $date = new DateTime();
+              $date->modify('-1 minute');
+
+              $entry->expiryDate = $date;
+              Craft::$app->elements->saveElement($entry);
+            }
+
             // One entry is done so we make the bar progress
             $jobDone++;
             $this->setProgress($queue, ($jobDone / count($this->entriesId)));
