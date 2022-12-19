@@ -134,6 +134,7 @@ class CsvRowsJob extends BaseJob
         // If it's the last job in the queue, we update the export date in the settings
         if ($this->last) {
             CraftExportCsv::getInstance()->exportsService->updateExportDate($this->export['id']);
+            CraftExportCsv::getInstance()->exportsService->updateExportBatch($this->export['id']);
         }
 
         // Job done

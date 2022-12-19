@@ -25,6 +25,7 @@
     {% if selectedExport['id'] ?? null %}
       <input type="hidden" name="settings[id]" value="{{ selectedExport['id'] }}">
     {% endif %}
+    <input type="hidden" name="settings[batch]" value="{{ selectedExport['batch'] ?? '0' }}">
     {{ redirectInput('craft-export-csv/settings') }}
 
     {{ forms.textField({

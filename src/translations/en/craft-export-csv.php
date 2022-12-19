@@ -37,7 +37,7 @@ return [
     'name-label' => 'Name of the export',
     'name-instructions' => 'Choose a descriptive name for the export',
     'filename-label' => 'File Name',
-    'filename-instructions' => 'Keys available: {timestamp}, {Y}, {d}, {m}, {H}, {i}, {section-handle}',
+    'filename-instructions' => 'Keys available: {batch}, {timestamp}, {Y}, {d}, {m}, {H}, {i}, {section-handle}',
     'fields-label' => 'Columns',
     'fields-instructions' => 'Describe columns to export.',
     'field-name' => 'Column Title',

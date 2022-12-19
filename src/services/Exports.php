@@ -157,4 +157,17 @@ class Exports extends Component
         }
         Craft::$app->getPlugins()->savePluginSettings($this->plugin, $this->settings->exports);
     }
+    /**
+     * Update batch if report has been generated
+     * @param string $id
+     */
+    public function updateExportBatch($id)
+    {
+        foreach ($this->settings->exports as $key => $export) {
+            if ($export['id'] == $id) {
+                $this->settings->exports[$key]['batch'] = intval($this->settings->exports[$key]['batch']) + 1;
+            }
+        }
+        Craft::$app->getPlugins()->savePluginSettings($this->plugin, $this->settings->exports);
+    }
 }
