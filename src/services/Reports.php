@@ -81,7 +81,7 @@ class Reports extends Component
             return $fields;
         }
 
-        $sectionFields = $section->getEntryTypes()[0]->getFieldLayout()->getFields();
+        $sectionFields = $section->getEntryTypes()[0]->getFieldLayout()->getCustomFields();
 
         foreach ($sectionFields as $field) {
             $fields[$field->handle] = $field->name;

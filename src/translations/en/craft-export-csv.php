@@ -49,5 +49,5 @@ return [
     'no-reports' => 'No report has been configured.',
     'configure-report' => 'Configure a report',
     'no-result' => 'No entry to download.',
-    'reports-list' => 'List of report',
+    'reports-list' => 'List of reports',
 ];
