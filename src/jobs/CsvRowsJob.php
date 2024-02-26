@@ -20,6 +20,11 @@ use Craft;
 
 class CsvRowsJob extends BaseJob
 {
+    // Constants
+    // =========================================================================
+    const MYSQL_DATETIME = 'Y-m-d H:i:s';
+    const UTC = 'UTC';
+
     // Public properties
     ////////////////////////////////////////////////////
 
@@ -51,6 +56,7 @@ class CsvRowsJob extends BaseJob
         $exportFile = fopen($folder . $this->export['lastSavedFilename'], 'a');
 
         $optionSiteId = isset($this->export['siteId']) ? $this->export['siteId'] : null;
+        $optionExpireEntries = isset($this->export['expireEntries']) ? count($this->export['expireEntries']) : null;
         $requestSite = Craft::$app->sites->getSiteById((int) $optionSiteId) !== null
             ? Craft::$app->sites->getSiteById((int) $optionSiteId)->id
             : Craft::$app->sites->primarySite->id;
@@ -83,7 +89,9 @@ class CsvRowsJob extends BaseJob
                     case CraftExportCsv::FIELD_TYPE_HANDLE:
                     default:
                         // Some field data contains different object.
-                        if ($entry->{$field['value']} instanceof CategoryQuery || $entry->{$field['value']} instanceof EntryQuery) {
+                        if (!$field['value']) {
+                          $entryData[] = '';
+                        } elseif ($entry->{$field['value']} instanceof CategoryQuery || $entry->{$field['value']} instanceof EntryQuery) {
                             $entryData[] = CraftExportCsv::getInstance()->reportsService->getTitles($entry->{$field['value']}->all());
                         } elseif (is_object($entry->{$field['value']}) && get_class($entry->{$field['value']}) === 'craft\elements\db\AssetQuery') {
                             $entryData[] = $entry->{$field['value']}->one() !== null ? $entry->{$field['value']}->one()->url : null;
@@ -96,6 +104,15 @@ class CsvRowsJob extends BaseJob
                         }
                 }
             }
+
+            if ($optionExpireEntries ?? null) {
+              $date = new DateTime();
+              $date->modify('-1 minute');
+
+              $entry->expiryDate = $date;
+              Craft::$app->elements->saveElement($entry);
+            }
+
             // One entry is done so we make the bar progress
             $jobDone++;
             $this->setProgress($queue, ($jobDone / count($this->entriesId)));
@@ -117,6 +134,7 @@ class CsvRowsJob extends BaseJob
         // If it's the last job in the queue, we update the export date in the settings
         if ($this->last) {
             CraftExportCsv::getInstance()->exportsService->updateExportDate($this->export['id']);
+            CraftExportCsv::getInstance()->exportsService->updateExportBatch($this->export['id']);
         }
 
         // Job done

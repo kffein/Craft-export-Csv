@@ -22,15 +22,28 @@
 
 {% block content %}
     <input type="hidden" name="action" value="craft-export-csv/settings/save-settings">
+    {% if selectedExport['id'] ?? null %}
+      <input type="hidden" name="settings[id]" value="{{ selectedExport['id'] }}">
+    {% endif %}
+    <input type="hidden" name="settings[batch]" value="{{ selectedExport['batch'] ?? '0' }}">
     {{ redirectInput('craft-export-csv/settings') }}
+
+    {{ forms.textField({
+        label: 'name-label'|t('craft-export-csv'),
+        instructions: 'name-instructions'|t('craft-export-csv'),
+        id: 'name',
+        name: 'settings[name]',
+        value: selectedExport['name'] ?? null,
+        required:true,
+    })}}
 
     {{ forms.textField({
         label: 'numberOfRows-label'|t('craft-export-csv'),
         instructions: 'numberOfRows-instructions'|t('craft-export-csv'),
         id: 'numberOfRows',
         name: 'settings[numberOfRows]',
-
-        size:3
+        size:3,
+        value: selectedExport['numberOfRows'] ?? null,
     })}}
 
     {{ forms.selectField({
@@ -39,22 +52,23 @@
         id: 'siteId',
         name: 'settings[sectionHandle]',
         options: sectionsOptions,
+        value: selectedExport['sectionHandle'] ?? null,
     })}}
 
     {{ forms.selectField({
         label: 'sites-handle-label'|t('craft-export-csv'),
         id: 'sectionHandle',
         name: 'settings[siteId]',
-
         options: sitesOptions,
+        value: selectedExport['siteId'] ?? null,
     })}}
 
     {{ forms.checkboxSelectField({
         label: 'entryStatus-handle-label'|t('craft-export-csv'),
         id: 'entryStatus',
         name: 'settings[entryStatus]',
-        values: ['Enabled', 'Live'],
-        options: statusOptions
+        values: selectedExport['entryStatus'] ?? ['Enabled', 'Live'],
+        options: statusOptions,
     }) }}
 
     {{ forms.textField({
@@ -62,9 +76,18 @@
         instructions: 'filename-instructions'|t('craft-export-csv'),
         id: 'filename',
         name: 'settings[filename]',
+        value: selectedExport['filename'] ?? null,
         required:true,
-
     })}}
+
+    {{ forms.checkboxSelectField({
+        label: 'expireEntries-label'|t('craft-export-csv'),
+        instructions: 'expireEntries-instructions'|t('craft-export-csv'),
+        id: 'expireEntries',
+        name: 'settings[expireEntries]',
+        values: selectedExport['expireEntries'] ?? ['Expire exported entries'],
+        options: expireEntriesOptions,
+    }) }}
 
     {{ forms.editableTableField({
         label: 'fields-label'|t('craft-export-csv'),
@@ -86,6 +109,7 @@
                 type: 'text',
             }
         },
+        rows: selectedExport['fields'] ?? null,
         allowAdd: true,
         allowReorder: true,
         allowDelete: true,
@@ -103,22 +127,33 @@
     <div id="reports-list" class="field">
         {% for export in settings.exports %}
             <hr/>
-            <div>
-            <p>{{ export.sectionHandle }}</p>
-            <p>{{ export.filename }}</p>
-            <a href="{{ actionUrl('craft-export-csv/settings/delete-export', { id: export.id }) }}" class="btn submit" >{{ 'delete'|t('craft-export-csv') }}</a>
+            <div class="flex space-between">
+              <div class="flex">
+                <p><a href="{{ url('craft-export-csv/settings', { id: export.id }) }}">{{ export.name }}</a></p>
+                <p>{{ export.sectionHandle }}</p>
+                <p>{{ export.filename }}</p>
+              </div>
+              <div class="flex">
+                <a href="{{ actionUrl('craft-export-csv/settings/duplicate-export', { id: export.id }) }}" class="btn submit" >{{ 'duplicate'|t('craft-export-csv') }}</a>
+                <a href="{{ actionUrl('craft-export-csv/settings/delete-export', { id: export.id }) }}" class="btn submit" >{{ 'delete'|t('craft-export-csv') }}</a>
+              </div>
             </div>
 
         {% endfor %}
     </div>
 
     <style type="text/css">
-        #reports-list a{
-            float:right;
+        .flex {
+          display: flex;
+        }
+
+        .space-between {
+          justify-content: space-between;
+        }
+        #reports-list .btn{
             margin: 15px;
         }
         #reports-list p{
-            float:left;
             margin: 21px !important;
             color: #8f98a3;
         }

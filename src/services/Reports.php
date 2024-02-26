@@ -54,12 +54,15 @@ class Reports extends Component
         $now = new DateTime();
 
         $filename = $exportSettings['filename'];
-        $filename = $filename = preg_replace('/{timestamp}/', $now->getTimestamp(), $filename);
-        $filename = $filename = preg_replace('/{Y}/', $now->format('Y'), $filename);
-        $filename = $filename = preg_replace('/{m}/', $now->format('m'), $filename);
-        $filename = $filename = preg_replace('/{d}/', $now->format('d'), $filename);
-        $filename = $filename = preg_replace('/{H}/', $now->format('H'), $filename);
-        $filename = $filename = preg_replace('/{i}/', $now->format('i'), $filename);
+        $filename = preg_replace('/{timestamp}/', $now->getTimestamp(), $filename);
+        $filename = preg_replace('/{Y}/', $now->format('Y'), $filename);
+        $filename = preg_replace('/{m}/', $now->format('m'), $filename);
+        $filename = preg_replace('/{d}/', $now->format('d'), $filename);
+        $filename = preg_replace('/{H}/', $now->format('H'), $filename);
+        $filename = preg_replace('/{i}/', $now->format('i'), $filename);
+        if ($exportSettings['batch']) {
+          $filename = preg_replace('/{batch}/', $exportSettings['batch'], $filename);
+        }
         if ($exportSettings['sectionHandle']) {
             $filename = preg_replace('/{section-handle}/', $exportSettings['sectionHandle'], $filename);
         }

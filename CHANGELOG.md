@@ -4,6 +4,34 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 4.2.0 - 2022-12-19
+### Added
+- Allow use of {batch} in filename
+
+## 4.1.1 - 2022-12-14
+### Fix
+- Ensure composer.json version matches tag
+
+## 4.1.0 - 2022-12-14
+### Added
+- Allow editing of a previously-created export
+- Allow an export to be duplicated
+- Include a name for the export and reformat reports screen
+- Allow empty field values
+- Allow exported entries to be expired
+### Fix
+- Assignment operator should be equality operator
+
+## 4.0.0 - 2022-12-11
+### Added
+- Convert to craft-4 using craftcms/rector
+- Add .editorconfig
+- Bump to 4.0.0
+### Fix
+- Fix typo
+- Ensure editableTableField is visible in craft-4
+-  Standardise formatting
+
 ## 1.1.1 - 2020-11-16
 ### Added
 - Add support for Craft 3.6

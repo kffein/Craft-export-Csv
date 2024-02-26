@@ -2,7 +2,7 @@
   "name": "kffein/craft-export-csv",
   "description": "A plugin to export entries to CSV files.",
   "type": "craft-plugin",
-  "version": "4.0.0",
+  "version": "4.2.0",
   "keywords": [
     "craft",
     "cms",
